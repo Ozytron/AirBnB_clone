@@ -14,7 +14,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
-#Global variable-list for the class names used.
+"""Global variable-list for the class names used."""
 Classes = [
     "BaseModel",
     "User",
@@ -25,20 +25,20 @@ Classes = [
     "Review"
 ]
 
+
 def parse(arg):
     """This analyzes the line feed into the command interpreter by dividing
     them into words
     Argument:
         args (type:str)- The string to be processed.
-        
     Return:
         return a list of processed words/terms
     """
     curly_braces = re.search(r"\{(.*?)\}", arg)
     square_bracket = re.search(r"\[(.*?)\]", arg)
 
-    if curly_braces == None:
-        if square_bracket == None:
+    if curly_braces is None:
+        if square_bracket is None:
             return [i.strip(",") for i in split(arg)]
         else:
             lexer = split(arg[:square_bracket.span()[0]])
@@ -51,14 +51,15 @@ def parse(arg):
         ret.append(curly_braces.group())
         return ret
 
+
 def verify_args(args):
     """This checks if the args is valid
-    
     Argument:
-        args (type:str): the string containing the arguments passed to a command
-    Returns:
-        Error message if args is None or not a valid class, else the arguments"""
-    
+        args (type:str): the string containing the
+                       arguments passed to a command.
+        Returns:
+        Error message if args is None or not a valid class, else the arguments
+    """
     arg_list = parse(args)
     if len(arg_list) == 0:
         print("class name missing")
@@ -84,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, argv):
         """When executed, exits the console."""
         return True
-    
+
     def do_create(self, argv):
         """Creates a new instance of BaseModel, saves it
         (to the JSON file) and prints the id
@@ -120,7 +121,7 @@ class HBNBCommand(cmd.Cmd):
             if key not in storage.all():
                 print("no instance found")
             else:
-                del(storage.all()[key])
+                del (storage.all()[key])
                 storage.save()
 
     def do_all(self, argv):
@@ -137,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print([str(obj) for obj in objects
                        if arg_list[0] in str(obj)])
-    
+
     def do_update(self, argv):
         """Updates an instance based on the class name and id by adding or
         updating attribute (save the change into the JSON file)

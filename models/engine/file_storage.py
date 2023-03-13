@@ -21,7 +21,7 @@ class FileStorage:
         """Returns the dictionary __objects
         """
         return self.__objects
-    
+
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id
         """

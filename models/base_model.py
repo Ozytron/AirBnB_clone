@@ -9,7 +9,7 @@ class BaseModel:
     """This is the base model that other classes will inherit"""
     def __init__(self, *args, **kwargs):
         """Initialization of the class"""
-        
+
         timeformat = "%Y-%m-%dT%H:%M:%S.%f"
 
         if kwargs:
@@ -23,13 +23,13 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             models.storage.new(self)
-    
+
     def save(self):
         """This method updates the instance attribute 'updated_at'
         with the current datetime.
         """
         self.updated_at = datetime.now()
-    
+
     def to_dict(self):
         """-This method returns a dictionary containing all
         keys/values of __dict__ of the instance.
@@ -44,25 +44,8 @@ class BaseModel:
         ret_dict["updated_at"] = self.updated_at.isoformat()
 
         return (ret_dict)
-    
+
     def __str__(self):
         """return the Print/string representation of the BaseModel instance."""
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
-
-if __name__ == "__main__":
-    a = BaseModel()
-    a.name = "my model"
-    print(str(a))
-    print("------------------")
-    to_jason = a.to_dict()
-    print(to_jason)
-    for key in to_jason:
-        print("\t{}: ({}) - {}".format(key, type(to_jason[key]), a.to_dict()[key]))
-    
-    my_new_model = BaseModel(**to_jason)
-    print(my_new_model.id)
-    print(my_new_model)
-    print(type(my_new_model.created_at))
-    
-    print("--")
-    print(a is my_new_model)
+        class_name = self.__class__.__name__
+        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
