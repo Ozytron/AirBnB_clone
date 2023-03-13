@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """The BaseModel class"""
-import models
 from uuid import uuid4
 from datetime import datetime
 
@@ -9,6 +8,7 @@ class BaseModel:
     """This is the base model that other classes will inherit"""
     def __init__(self, *args, **kwargs):
         """Initialization of the class"""
+        from models import storage
 
         timeformat = "%Y-%m-%dT%H:%M:%S.%f"
 
@@ -22,14 +22,18 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            models.storage.new(self)
+            storage.new(self)
 
     def save(self):
         """This method updates the instance attribute 'updated_at'
         with the current datetime.
+        -invoke save() function &
+        - save to serialized file
         """
+        from models import storage
+
         self.updated_at = datetime.now()
-        models.storage.save()
+        storage.save()
 
     def to_dict(self):
         """-This method returns a dictionary containing all

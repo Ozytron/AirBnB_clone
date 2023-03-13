@@ -5,7 +5,7 @@ import cmd
 import re
 from shlex import split
 
-from models import storage
+import models
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -62,9 +62,9 @@ def verify_args(args):
     """
     arg_list = parse(args)
     if len(arg_list) == 0:
-        print("**class name missing**")
+        print("** class name missing **")
     if arg_list[0] not in Classes:
-        print("**class doesn't exist**")
+        print("** class doesn't exist **")
     else:
         return (arg_list)
 
@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
         args = verify_args(argv)
         if args:
             print(eval(args[0])().id)
-            storage.save()
+            models.storage.save()
 
     def do_show(self, argv):
         """Prints the string representation of an instance
@@ -123,13 +123,13 @@ class HBNBCommand(cmd.Cmd):
         """
         args = verify_args(argv)
         if len(args) != 2:
-            print("**instance id missing**")
+            print("** instance id missing **")
         else:
             key = "{}.{}".format(args[0], args[1])
-            if key not in storage.all():
-                print("**no instance found**")
+            if key not in models.storage.all():
+                print("** no instance found **")
             else:
-                print(storage.all()[key])
+                print(models.storage.all()[key])
 
     def do_destroy(self, argv):
         """ Deletes an instance based on the class name and id
@@ -137,26 +137,26 @@ class HBNBCommand(cmd.Cmd):
         """
         args = verify_args(argv)
         if len(args) == 1:
-            print("**instance id missing**")
+            print("** instance id missing **")
         else:
             key = "{}.{}".format(args[0], args[1])
-            if key not in storage.all():
-                print("**no instance found**")
+            if key not in models.storage.all():
+                print("** no instance found **")
             else:
-                del (storage.all()[key])
-                storage.save()
+                del (models.storage.all()[key])
+                models.storage.save()
 
     def do_all(self, argv):
         """Prints all string representation of all instances based
         or not on the class name.
         """
         arg_list = split(argv)
-        objects = storage.all().values()
+        objects = models.storage.all().values()
         if not arg_list:
             print([str(obj) for obj in objects])
         else:
             if arg_list[0] not in Classes:
-                print("**class doesn't exist **")
+                print("** class doesn't exist **")
             else:
                 print([str(obj) for obj in objects
                        if arg_list[0] in str(obj)])
@@ -167,20 +167,20 @@ class HBNBCommand(cmd.Cmd):
         """
         args = verify_args(argv)
         if len(args) == 1:
-            print("**instance id missing**")
+            print("** instance id missing **")
         if len(args) == 2:
-            print("**attribute name missing**")
+            print("** attribute name missing **")
         if len(args) == 3:
             try:
                 type(eval(args[2])) != dict
             except NameError:
-                print("**value missing**")
-        if len(args) == 4 and type(eval(args[2])) != dict:
+                print("** value missing **")
+        if len(args) == 4:
             key = "{}.{}".format(args[0], args[1])
-            if key not in storage.all():
-                print("**no instance found**")
+            if key not in models.storage.all():
+                print("** no instance found **")
             else:
-                obj = storage.all()[key]
+                obj = models.storage.all()[key]
                 attr, value = args[2], args[3]
                 if attr in type(obj).__dict__:
                     value_type = type(obj.__class__.__dict__[attr])
@@ -189,7 +189,7 @@ class HBNBCommand(cmd.Cmd):
                     setattr(obj, attr, value)
         elif type(eval(args[2])) == dict:
             key = "{}.{}".format(args[0], args[1])
-            obj = storage.all()[key]
+            obj = models.storage.all()[key]
             for attr, value in eval(args[2]).items():
                 class_dict = obj.__class__.__dict__
                 if (attr in class_dict.keys() and
@@ -198,13 +198,13 @@ class HBNBCommand(cmd.Cmd):
                     obj.__dict__[attr] = value_type(value)
                 else:
                     obj.__dict__[attr] = value
-        storage.save()
+        models.storage.save()
 
     def do_count(self, arg):
         """Retrieve the number of instances of a class"""
         arg1 = parse(arg)
         count = 0
-        for obj in storage.all().values():
+        for obj in models.storage.all().values():
             if arg1[0] == type(obj).__name__:
                 count += 1
         print(count)

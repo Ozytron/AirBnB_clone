@@ -29,7 +29,7 @@ class FileStorage:
 
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
-        with open(FileStorage.__file_path, mode="w") as write_file:
+        with open(self.__file_path, mode="w", encoding="utf-8") as write_file:
             storage_dict = {}
             for key, value in self.__objects.items():
                 storage_dict[key] = value.to_dict()
@@ -41,8 +41,10 @@ class FileStorage:
         exist, no exception should be raised)
         """
         try:
-            with open(FileStorage.__file_path, encoding="utf-8") as json_data:
-                for obj in json.load(json_data).values():
-                    self.new(eval(obj["__class__"])(**obj))
+            with open(self.__file_path, mode="r", encoding="utf-8") as j_data:
+                for obj in json.load(j_data).values():
+                    Cls_name = obj["__class__"]
+                    del obj["__class__"]
+                    self.new(eval(Cls_name)(**obj))
         except FileNotFoundError:
             return
