@@ -24,7 +24,7 @@ class TestHBNBCommand_prompting(unittest.TestCase):
     """Unittests for testing prompting of the HBNB command interpreter."""
 
     def test_prompt_string(self):
-        self.assertEqual("(hbnb) ", HBNBCommand.prompt)
+        self.assertEqual("(hbnb)", HBNBCommand.prompt)
 
     def test_empty_line(self):
         with patch("sys.stdout", new=StringIO()) as output:
@@ -36,14 +36,15 @@ class TestHBNBCommand_help(unittest.TestCase):
     """Unittests for testing help messages of the HBNB command interpreter."""
 
     def test_help_quit(self):
-        h = "Quit command to exit the program."
+        h = "When executed, exits the console."
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("help quit"))
             self.assertEqual(h, output.getvalue().strip())
 
     def test_help_create(self):
         h = ("Usage: create <class>\n        "
-             "Create a new class instance and print its id.")
+             "Creates a new instance of class, prints the id\n        "
+             "and saves it (to the JSON file)")
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("help create"))
             self.assertEqual(h, output.getvalue().strip())
@@ -64,7 +65,8 @@ class TestHBNBCommand_help(unittest.TestCase):
 
     def test_help_destroy(self):
         h = ("Usage: destroy <class> <id> or <class>.destroy(<id>)\n        "
-             "Delete a class instance of a given id.")
+             "Delete a class instance of a given id.\n        "
+             "(save the change into the JSON file)")
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("help destroy"))
             self.assertEqual(h, output.getvalue().strip())
@@ -90,7 +92,8 @@ class TestHBNBCommand_help(unittest.TestCase):
              "\n       <class>.update(<id>, <attribute_name>, <attribute_value"
              ">) or\n       <class>.update(<id>, <dictionary>)\n        "
              "Update a class instance of a given id by adding or updating\n   "
-             "     a given attribute key/value pair or dictionary.")
+             "     a given attribute key/value pair or dictionary.\n        "
+             "(save the change into the JSON file)")
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("help update"))
             self.assertEqual(h, output.getvalue().strip())
