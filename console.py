@@ -43,7 +43,7 @@ def parse(arg):
 
 class HBNBCommand(cmd.Cmd):
     """entry point of the command interpreter"""
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     """Global variable-list for the class names used."""
     __Classes = [
