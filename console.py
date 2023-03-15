@@ -82,12 +82,11 @@ class HBNBCommand(cmd.Cmd):
         return False
 
     def do_quit(self, argv):
-        """Quit command to exit the program"""
+        """Quit command to exit the program\n"""
         return True
 
     def do_EOF(self, argv):
-        """EOF command to exit the program"""
-        print("")
+        """EOF command to exit the program\n"""
         return True
 
     def do_create(self, argv):
